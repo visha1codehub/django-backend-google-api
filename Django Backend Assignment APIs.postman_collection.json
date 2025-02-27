@@ -1,0 +1,350 @@
+{
+	"info": {
+		"_postman_id": "dd793e34-4ab9-44a6-b3ce-50588a178fed",
+		"name": "Django Backend Assignment APIs",
+		"description": "This collection tests the APIs for a Django backend assignment integrating Google OAuth 2.0, Google Drive, and WebSocket chat. Requirements: Django server running, Redis for WebSocket, and a .env file with GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI, SECRET_KEY, DEBUG, ALLOWED_HOSTS, REDIS_HOST, and REDIS_PORT.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29634017"
+	},
+	"item": [
+		{
+			"name": "GET Initiate Google Auth",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"description": "Initiates the Google OAuth 2.0 flow, returning an authorization URL for user login. Requires GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_REDIRECT_URI in .env.\n\n`After receiving the response, open the authorization_url in a browser to complete the OAuth flow, which redirects to /api/auth/callback/.`"
+			},
+			"response": [
+				{
+					"name": "Successful Auth Initiation",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://12ca-2a09-bac5-3b5f-16b4-00-243-4e.ngrok-free.app/api/auth/",
+							"protocol": "https",
+							"host": [
+								"12ca-2a09-bac5-3b5f-16b4-00-243-4e",
+								"ngrok-free",
+								"app"
+							],
+							"path": [
+								"api",
+								"auth",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Allow",
+							"value": "GET, HEAD, OPTIONS"
+						},
+						{
+							"key": "Content-Length",
+							"value": "408"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Ngrok-Agent-Ips",
+							"value": "2a09:bac5:3b5f:16b4::243:4e"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Server",
+							"value": "daphne"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "sessionid=uhte9u6pr988ftwcjs94mhi3dox3gcwh; expires=Thu, 13 Mar 2025 17:48:16 GMT; HttpOnly; Max-Age=1209600; Path=/; SameSite=Lax"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 27 Feb 2025 17:48:16 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"authorization_url\": \"https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=758990555928-uq9vnemkkev4nmf09aoq4lgehdbm252q.apps.googleusercontent.com&redirect_uri=https%3A%2F%2F12ca-2a09-bac5-3b5f-16b4-00-243-4e.ngrok-free.app%2Fapi%2Fauth%2Fcallback&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fdrive&state=UW4NW6RIQzKCpdjkTblIBiVkMLTMIQ&access_type=offline&include_granted_scopes=true\"\n}"
+				}
+			]
+		},
+		{
+			"name": "GET OAuth Callback",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://12ca-2a09-bac5-3b5f-16b4-00-243-4e.ngrok-free.app/api/auth/callback",
+					"protocol": "https",
+					"host": [
+						"12ca-2a09-bac5-3b5f-16b4-00-243-4e",
+						"ngrok-free",
+						"app"
+					],
+					"path": [
+						"api",
+						"auth",
+						"callback"
+					]
+				},
+				"description": "Handles the Google OAuth callback, returning access credentials. Typically called by Google after user login via /api/auth/. Requires GOOGLE_REDIRECT_URI to match the .env and Google Cloud Console settings.\n\n`Not directly testable in Postman without a valid code parameter. Use the authorization_url from /api/auth/ in a browser to test.`"
+			},
+			"response": [
+				{
+					"name": "Successful Callback",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://12ca-2a09-bac5-3b5f-16b4-00-243-4e.ngrok-free.app/api/auth/callback",
+							"protocol": "https",
+							"host": [
+								"12ca-2a09-bac5-3b5f-16b4-00-243-4e",
+								"ngrok-free",
+								"app"
+							],
+							"path": [
+								"api",
+								"auth",
+								"callback"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Length",
+							"value": "106609"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Ngrok-Agent-Ips",
+							"value": "2a09:bac5:3b5f:16b4::243:4e"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Server",
+							"value": "daphne"
+						},
+						{
+							"key": "Vary",
+							"value": "Cookie"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 27 Feb 2025 18:02:14 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"token\": \"ya29.a0AeXRPp7cMHthgyHOBs81ewjolawBzWWJbLfxpfxLxW2rON2Sfdo7FZMF0U3qxMZvHFlZcGsD3gZeypzsQkx3oLoBeOqQUg-wPnms4K3L3ZovJsnI7s9kzNQuxQU56ieq6bHOyll74xsk2J4gxtKUwprC1VYic7Y20faPfg1JaCgYKAQkSARESFQHGX2Minph_ZadiPoQuxE3o6sK-fw0175\",\n    \"refresh_token\": null,\n    \"expires_in\": \"2025-02-27T18:54:05.034709\"\n}"
+				}
+			]
+		},
+		{
+			"name": "POST Upload File to Drive",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "credentials",
+							"value": "{\"token\": \"ya29.a0AeXRPp7cMHthgyHOBs81ewjolawBzWWJbLfxpfxLxW2rON2Sfdo7FZMF0U3qxMZvHFlZcGsD3gZeypzsQkx3oLoBeOqQUg-wPnms4K3L3ZovJsnI7s9kzNQuxQU56ieq6bHOyll74xsk2J4gxtKUwprC1VYic7Y20faPfg1JaCgYKAQkSARESFQHGX2Minph_ZadiPoQuxE3o6sK-fw0175\", \"refresh_token\": null, \"expires_in\": \"2025-02-27T18:54:05.034709\"}",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/vishal/Downloads/375108.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://12ca-2a09-bac5-3b5f-16b4-00-243-4e.ngrok-free.app/api/drive/",
+					"protocol": "https",
+					"host": [
+						"12ca-2a09-bac5-3b5f-16b4-00-243-4e",
+						"ngrok-free",
+						"app"
+					],
+					"path": [
+						"api",
+						"drive",
+						""
+					]
+				},
+				"description": "Uploads a file to Google Drive using OAuth credentials. Supports text files, images, etc. Requires credentials from /api/auth/callback/.\n\n`Use form-data with 'credentials' as a JSON string and 'file' as the uploaded file.`"
+			},
+			"response": [
+				{
+					"name": "Successful Upload",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "credentials",
+									"value": "{\"token\": \"ya29.a0AeXRPp7cMHthgyHOBs81ewjolawBzWWJbLfxpfxLxW2rON2Sfdo7FZMF0U3qxMZvHFlZcGsD3gZeypzsQkx3oLoBeOqQUg-wPnms4K3L3ZovJsnI7s9kzNQuxQU56ieq6bHOyll74xsk2J4gxtKUwprC1VYic7Y20faPfg1JaCgYKAQkSARESFQHGX2Minph_ZadiPoQuxE3o6sK-fw0175\", \"refresh_token\": null, \"expires_in\": \"2025-02-27T18:54:05.034709\"}",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/vishal/Downloads/375108.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://12ca-2a09-bac5-3b5f-16b4-00-243-4e.ngrok-free.app/api/drive/",
+							"protocol": "https",
+							"host": [
+								"12ca-2a09-bac5-3b5f-16b4-00-243-4e",
+								"ngrok-free",
+								"app"
+							],
+							"path": [
+								"api",
+								"drive",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "Content-Length",
+							"value": "48"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Ngrok-Agent-Ips",
+							"value": "2a09:bac5:3b5f:16b4::243:4e"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Server",
+							"value": "daphne"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Cookie"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 27 Feb 2025 18:09:11 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"file_id\": \"1zLDw2STyNeWE43Pfg5Xkgk2bRz71Rr-o\"\n}"
+				}
+			]
+		},
+		{
+			"name": "POST Download File from Drive",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"credentials\": {\n        \"token\": \"ya29.a0AeXRPp7cMHthgyHOBs81ewjolawBzWWJbLfxpfxLxW2rON2Sfdo7FZMF0U3qxMZvHFlZcGsD3gZeypzsQkx3oLoBeOqQUg-wPnms4K3L3ZovJsnI7s9kzNQuxQU56ieq6bHOyll74xsk2J4gxtKUwprC1VYic7Y20faPfg1JaCgYKAQkSARESFQHGX2Minph_ZadiPoQuxE3o6sK-fw0175\",\n        \"refresh_token\": null,\n        \"expires_in\": \"2025-02-27T18:54:05.034709\"\n    },\n    \"file_id\": \"1zLDw2STyNeWE43Pfg5Xkgk2bRz71Rr-o\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://12ca-2a09-bac5-3b5f-16b4-00-243-4e.ngrok-free.app/api/drive/",
+					"protocol": "https",
+					"host": [
+						"12ca-2a09-bac5-3b5f-16b4-00-243-4e",
+						"ngrok-free",
+						"app"
+					],
+					"path": [
+						"api",
+						"drive",
+						""
+					]
+				},
+				"description": "`Downloads a file from Google Drive using its file_id and OAuth credentials. Returns text content in JSON for text files or binary data for images/other files.`"
+			},
+			"response": []
+		}
+	]
+}
